@@ -1,0 +1,35 @@
+<%- include('partials/header') %>
+<form class="filters" method="GET" action="/blogs">
+  <input type="text" name="q" placeholder="Search blogs..." value="<%= q %>">
+  <select name="category">
+    <option value="">All categories</option>
+    <% CATEGORIES.forEach(c => { %>
+      <option value="<%= c %>" <%= c === category ? 'selected' : '' %>><%= c %></option>
+    <% }) %>
+  </select>
+  <button class="btn" type="submit">Filter</button>
+  <a class="btn btn-light" href="/blogs">Reset</a>
+</form>
+
+<% if (!blogs.length) { %>
+  <p class="empty">No blogs found. <a href="/blogs/new">Create the first one!</a></p>
+<% } %>
+
+<div class="grid">
+<% blogs.forEach(b => { %>
+  <article class="card">
+    <span class="tag"><%= b.category %></span>
+    <h2><a href="/blogs/<%= b.id %>"><%= b.title %></a></h2>
+    <p class="meta">By <%= b.author %> · <%= new Date(b.createdAt).toLocaleDateString() %></p>
+    <p><%= b.content.length > 140 ? b.content.slice(0, 140) + '…' : b.content %></p>
+    <div class="actions">
+      <a class="btn btn-light" href="/blogs/<%= b.id %>">Read</a>
+      <a class="btn btn-light" href="/blogs/<%= b.id %>/edit">Edit</a>
+      <form method="POST" action="/blogs/<%= b.id %>/delete" onsubmit="return confirm('Delete this blog?')">
+        <button class="btn btn-danger" type="submit">Delete</button>
+      </form>
+    </div>
+  </article>
+<% }) %>
+</div>
+<%- include('partials/footer') %>

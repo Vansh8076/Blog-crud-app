@@ -1,0 +1,22 @@
+<%- include('partials/header') %>
+<h1><%= heading %></h1>
+<% if (errors.length) { %>
+  <ul class="errors"><% errors.forEach(e => { %><li><%= e %></li><% }) %></ul>
+<% } %>
+<form class="form" method="POST" action="<%= action %>">
+  <label>Title <input type="text" name="title" value="<%= blog.title || '' %>" required></label>
+  <label>Author <input type="text" name="author" value="<%= blog.author || '' %>" required></label>
+  <label>Category
+    <select name="category">
+      <% CATEGORIES.forEach(c => { %>
+        <option value="<%= c %>" <%= blog.category === c ? 'selected' : '' %>><%= c %></option>
+      <% }) %>
+    </select>
+  </label>
+  <label>Content <textarea name="content" rows="10" required><%= blog.content || '' %></textarea></label>
+  <div class="actions">
+    <button class="btn" type="submit">Save</button>
+    <a class="btn btn-light" href="/blogs">Cancel</a>
+  </div>
+</form>
+<%- include('partials/footer') %>
